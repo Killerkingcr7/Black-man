@@ -1,161 +1,271 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deriv Last Digit Analysis</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background: #1e1e2e; color: #ffffff; text-align: center; padding: 20px; }
-        h2 { font-size: 24px; margin-bottom: 10px; }
-        label, select, input, button { font-size: 16px; margin: 5px; }
-        select, input, button { padding: 10px; border: none; border-radius: 5px; }
-        select, input { background: #2b2b3a; color: #ffffff; }
-        button { background: #ff6f61; color: #ffffff; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #ff483e; }
-        .circle-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-top: 20px; max-width: 600px; margin: 20px auto; }
-        .circle { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-                  font-size: 14px; font-weight: bold; color: white; transition: 0.3s ease; }
-        .circle:hover { transform: scale(1.1); }
-        .ticker { position: absolute; width: 20px; height: 20px; background-color: yellow; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); transition: all 0.5s ease; z-index: 10; }
-        #debug { margin-top: 20px; font-family: monospace; overflow: auto; max-height: 150px; background: #2b2b3a; padding: 10px; border-radius: 5px; text-align: left; }
-        @media (max-width: 600px) {
-            .circle-container { grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); }
-            .circle { width: 60px; height: 60px; font-size: 12px; }
+   <style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        text-align: center;
+        padding: 20px;
+        background-color: #f4f7f6;
+        margin: 0;
+        color: #333;
+    }
+
+    h2 {
+        color: #2d2d2d;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+
+    label {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #555;
+    }
+
+    select, input, button {
+        font-size: 1rem;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        transition: all 0.3s ease;
+    }
+
+    select:focus, input:focus, button:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
+    button {
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .circle-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 30px;
+        padding: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        background-color: #007bff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .digit-info {
+        font-size: 14px;
+        margin-top: 5px;
+        color: #555;
+    }
+
+    .history-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .history-item {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 25px;
+        background-color: #f0f4f7;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        color: #007bff;
+    }
+
+    .history-item:hover {
+        background-color: #007bff;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .circle {
+            width: 70px;
+            height: 70px;
+            font-size: 16px;
         }
-    </style>
+
+        .digit-info {
+            font-size: 12px;
+        }
+
+        .history-item {
+            font-size: 18px;
+            padding: 8px 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .circle {
+            width: 60px;
+            height: 60px;
+            font-size: 14px;
+        }
+
+        .digit-info {
+            font-size: 10px;
+        }
+
+        .history-item {
+            font-size: 16px;
+            padding: 6px 12px;
+        }
+    }
+</style>
 </head>
 <body>
     <h2>Deriv Last Digit Analysis</h2>
     <label for="market">Select Market:</label>
     <select id="market">
-        <option value="R_10">R_10</option>
-        <option value="R_25">R_25</option>
-        <option value="R_50">R_50</option>
-        <option value="R_75">R_75</option>
         <option value="R_100">R_100</option>
-        <option value="1HZ10V">1HZ10V</option>
-        <option value="1HZ25V">1HZ25V</option>
-        <option value="1HZ50V">1HZ50V</option>
-        <option value="1HZ75V">1HZ75V</option>
-        <option value="1HZ100V">1HZ100V</option>
+        <option value="R_75">R_75</option>
+        <option value="R_50">R_50</option>
     </select>
     <br><br>
     <label for="tickCount">Number of Ticks to Analyze:</label>
     <input type="number" id="tickCount" value="100" min="10" max="1000">
-    <button onclick="connectWebSocket()">Start</button><div class="circle-container" id="circleContainer"></div>
-<div id="debug"></div>
-<script>
-    const API_TOKEN = "iGwTSVES9MsY9bv"; // Your API Token
-    const APP_ID = "67340"; // Your App ID
+    <button onclick="connectWebSocket()">Start</button>
+    
+    <div class="circle-container" id="circleContainer"></div>
+    <div class="history-container" id="historyContainer"></div>
 
-    let tickHistory = [];
-    let ws;
-    let tickerElement;
+    <script>
+        const API_TOKEN = "iGwTSVES9MsY9bv"; // Your API Token
+        const APP_ID = "67340"; // Your App ID
 
-    function connectWebSocket() {
-        const market = document.getElementById("market").value;
-        document.getElementById("debug").innerHTML = "";
+        let tickHistory = [];
+        let ws;
 
-        if (ws) ws.close();
+        // Function to connect to WebSocket
+        function connectWebSocket() {
+            const market = document.getElementById("market").value;
+            tickHistory = [];
+            updateDisplay();  // Reset the display
 
-        if (!tickerElement) {
-            tickerElement = document.createElement('div');
-            tickerElement.className = 'ticker';
-            document.querySelector('.circle-container').appendChild(tickerElement);
+            if (ws) ws.close();  // Close previous connection
+
+            // Create WebSocket connection
+            ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${APP_ID}`);
+
+            ws.onopen = function () {
+                console.log("✅ WebSocket Connected!");
+                ws.send(JSON.stringify({ "authorize": API_TOKEN }));
+                subscribeToMarket(market);
+            };
+
+            ws.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+
+                if (data.error) {
+                    console.error("❌ API Error:", data.error.message);
+                    return;
+                }
+
+                if (data.authorize) {
+                    console.log("✅ Authorization successful!");
+                }
+
+                if (data.tick) {
+                    processTick(data.tick.quote);
+                }
+            };
+
+            ws.onerror = function (error) {
+                console.error("❌ WebSocket Error:", error);
+            };
         }
 
-        ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${APP_ID}`);
+        // Subscribe to market ticks
+        function subscribeToMarket(market) {
+            console.log("📡 Subscribing to market:", market);
+            ws.send(JSON.stringify({ "ticks": market, "subscribe": 1 }));
+        }
 
-        ws.onopen = function () {
-            logDebug("WebSocket Connected!");
-            ws.send(JSON.stringify({ "authorize": API_TOKEN }));
-        };
+        // Process each tick
+        function processTick(price) {
+            const lastDigit = parseInt(price.toString().slice(-1));
 
-        ws.onmessage = function (event) {
-            const data = JSON.parse(event.data);
-            if (data.error) {
-                logDebug("❌ API Error: " + data.error.message);
-                return;
+            tickHistory.push(lastDigit);
+
+            const tickLimit = parseInt(document.getElementById("tickCount").value);
+            if (tickHistory.length > tickLimit) {
+                tickHistory.shift();
             }
 
-            if (data.authorize) {
-                logDebug("Authorization successful!");
-                startAnalysis(market);
+            updateDisplay();
+        }
+
+        // Update the display of circles and history
+        function updateDisplay() {
+            let counts = new Array(10).fill(0);
+            tickHistory.forEach(num => counts[num]++);
+
+            const total = tickHistory.length;
+            const circleContainer = document.getElementById("circleContainer");
+            circleContainer.innerHTML = "";
+
+            // Create circles for digits 0-9
+            for (let i = 0; i <= 9; i++) {
+                const percentage = total > 0 ? ((counts[i] / total) * 100).toFixed(1) : "0.0";
+                const color = `hsl(${i * 36}, 70%, 50%)`;
+
+                const circleDiv = document.createElement("div");
+                circleDiv.className = "circle";
+                circleDiv.style.background = color;
+                circleDiv.innerHTML = `${i}`;
+
+                const infoDiv = document.createElement("div");
+                infoDiv.className = "digit-info";
+                infoDiv.innerHTML = `${percentage}%`;
+
+                const wrapper = document.createElement("div");
+                wrapper.appendChild(circleDiv);
+                wrapper.appendChild(infoDiv);
+                circleContainer.appendChild(wrapper);
             }
 
-            if (data.tick) {
-                const lastDigit = parseInt(data.tick.quote.toString().slice(-1));
-                logDebug("📊 Last Digit: " + lastDigit);
-                processTick(lastDigit);
-            }
-        };
-
-        ws.onerror = function (error) {
-            logDebug("WebSocket Error: " + JSON.stringify(error));
-        };
-    }
-
-    function startAnalysis(market) {
-        logDebug("Subscribing to market: " + market);
-        ws.send(JSON.stringify({ "ticks": market, "subscribe": 1 }));
-    }
-
-    function processTick(lastDigit) {
-        tickHistory.push(lastDigit);
-
-        const tickLimit = parseInt(document.getElementById("tickCount").value);
-        if (tickHistory.length > tickLimit) {
-            tickHistory.shift();
+            // Update history of digits
+            const historyContainer = document.getElementById("historyContainer");
+            historyContainer.innerHTML = "";
+            tickHistory.forEach(num => {
+                const item = document.createElement("div");
+                item.className = "history-item";
+                item.innerHTML = num;
+                historyContainer.appendChild(item);
+            });
         }
-
-        updateDisplay();
-    }
-
-    function updateDisplay() {
-        let counts = Array(10).fill(0);
-        tickHistory.forEach(num => counts[num]++);
-
-        const total = tickHistory.length;
-        const circleContainer = document.getElementById("circleContainer");
-        circleContainer.innerHTML = "";
-
-        for (let i = 0; i <= 9; i++) {
-            const percentage = total ? ((counts[i] / total) * 100).toFixed(1) : 0;
-            const color = `hsl(${i * 36}, 70%, 50%)`;
-
-            const circleDiv = document.createElement("div");
-            circleDiv.className = "circle";
-            circleDiv.style.background = color;
-            circleDiv.innerHTML = `${i}: ${percentage}%`;
-
-            circleContainer.appendChild(circleDiv);
-        }
-
-        let overOneCount = counts.slice(2).reduce((a, b) => a + b, 0);
-        let overOnePercentage = total ? ((overOneCount / total) * 100).toFixed(1) : 0;
-        const overOneCircle = document.createElement("div");
-        overOneCircle.className = "circle";
-        overOneCircle.style.background = "#FF5733";
-        overOneCircle.innerHTML = `Over 1: ${overOnePercentage}%`;
-        circleContainer.appendChild(overOneCircle);
-
-        moveTicker(tickHistory[tickHistory.length - 1]);
-    }
-
-    function moveTicker(digit) {
-        const circles = document.querySelectorAll('.circle');
-        const targetCircle = circles[digit];
-
-        if (targetCircle) {
-            const rect = targetCircle.getBoundingClientRect();
-        }
-    }
-
-    function logDebug(message) {
-        const debugElement = document.getElementById("debug");
-        debugElement.innerHTML = message + "<br>" + debugElement.innerHTML;
-    }
-</script>
-
+    </script>
 </body>
 </html>
