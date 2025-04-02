@@ -148,11 +148,18 @@
 <body>
     <h2>Deriv Last Digit Analysis</h2>
     <label for="market">Select Market:</label>
-    <select id="market">
-        <option value="R_100">R_100</option>
-        <option value="R_75">R_75</option>
-        <option value="R_50">R_50</option>
-    </select>
+<select id="market">
+    <option value="R_10">Volatility 10</option>
+    <option value="R_25">Volatility 25</option>
+    <option value="R_50">Volatility 50</option>
+    <option value="R_75">Volatility 75</option>
+    <option value="R_100">Volatility 100</option>
+    <option value="1HZ10V">Volatility 10 (1s)</option>
+    <option value="1HZ25V">Volatility 25 (1s)</option>
+    <option value="1HZ50V">Volatility 50 (1s)</option>
+    <option value="1HZ75V">Volatility 75 (1s)</option>
+    <option value="1HZ100V">Volatility 100 (1s)</option>
+</select>
     <br><br>
     <label for="tickCount">Number of Ticks to Analyze:</label>
     <input type="number" id="tickCount" value="100" min="10" max="1000">
