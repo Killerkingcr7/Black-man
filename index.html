@@ -1,154 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deriv Last Digit Analysis</title>
-   <style>
-    body {
-        font-family: 'Roboto', sans-serif;
-        text-align: center;
-        padding: 20px;
-        background-color: #f4f7f6;
-        margin: 0;
-        color: #333;
-    }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEC analysis tool</title>
+  <style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f7f6;
+    margin: 0;
+    color: #333;
+  }
 
-    h2 {
-        color: #2d2d2d;
-        margin-bottom: 20px;
-        font-size: 1.5rem;
-    }
+  h2 {
+    color: #2d2d2d;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
 
-    label {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #555;
-    }
+  .last-tick-container {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
 
-    select, input, button {
-        font-size: 1rem;
-        padding: 10px;
-        margin: 8px 0;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        background-color: #fff;
-        transition: all 0.3s ease;
-    }
+  label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #555;
+  }
 
-    select:focus, input:focus, button:focus {
-        outline: none;
-        border-color: #007bff;
-    }
+  select, input, button {
+    font-size: 1rem;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    transition: all 0.3s ease;
+  }
 
-    button {
-        cursor: pointer;
-        background-color: #007bff;
-        color: white;
-        font-weight: bold;
-        border: none;
-        transition: background-color 0.3s ease;
-    }
+  select:focus, input:focus, button:focus {
+    outline: none;
+    border-color: #007bff;
+  }
 
-    button:hover {
-        background-color: #0056b3;
-    }
+  button {
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
 
-    .circle-container {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        flex-wrap: wrap;
-        margin-top: 30px;
-        padding: 10px;
-        transition: all 0.3s ease;
-    }
+  button:hover {
+    background-color: #0056b3;
+  }
 
+  .circle-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    padding: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .circle.glow {
+    box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.75);
+    transform: scale(1.1);
+  }
+
+  .digit-info {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #555;
+  }
+
+  .digit-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .history-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .history-item {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background-color: #f0f4f7;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #007bff;
+    transition: all 0.3s ease;
+  }
+
+  .history-item:hover {
+    background-color: #007bff;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
     .circle {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        font-weight: bold;
-        color: white;
-        background-color: #007bff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
+      width: 70px;
+      height: 70px;
+      font-size: 16px;
     }
-
     .digit-info {
-        font-size: 14px;
-        margin-top: 5px;
-        color: #555;
+      font-size: 12px;
     }
-
-    .history-container {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 30px;
-        flex-wrap: wrap;
-    }
-
     .history-item {
-        font-size: 20px;
-        font-weight: bold;
-        padding: 10px 20px;
-        border-radius: 25px;
-        background-color: #f0f4f7;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        color: #007bff;
+      font-size: 18px;
+      padding: 8px 15px;
     }
+  }
 
-    .history-item:hover {
-        background-color: #007bff;
-        color: white;
-        transform: translateY(-2px);
+  @media (max-width: 480px) {
+    .circle {
+      width: 60px;
+      height: 60px;
+      font-size: 14px;
     }
-
-    /* Responsive Styles */
-    @media (max-width: 768px) {
-        .circle {
-            width: 70px;
-            height: 70px;
-            font-size: 16px;
-        }
-
-        .digit-info {
-            font-size: 12px;
-        }
-
-        .history-item {
-            font-size: 18px;
-            padding: 8px 15px;
-        }
+    .digit-info {
+      font-size: 10px;
     }
-
-    @media (max-width: 480px) {
-        .circle {
-            width: 60px;
-            height: 60px;
-            font-size: 14px;
-        }
-
-        .digit-info {
-            font-size: 10px;
-        }
-
-        .history-item {
-            font-size: 16px;
-            padding: 6px 12px;
-        }
+    .history-item {
+      font-size: 16px;
+      padding: 6px 12px;
     }
-</style>
+  }
+
+  /* Even-Odd Bar Styles */
+  .even-odd-bar-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
+  .bar {
+    height: 20px;
+    width: 45%;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: width 0.5s ease;
+  }
+
+  .even-bar {
+    background-color: #28a745;
+  }
+
+  .odd-bar {
+    background-color: #dc3545;
+  }
+  </style>
 </head>
 <body>
-    <h2>Deriv Last Digit Analysis</h2>
-    <label for="market">Select Market:</label>
-<select id="market">
+  <h2>Deriv Last Digit Analysis</h2>
+  
+  <!-- Last Tick Display -->
+  <div id="lastTick" class="last-tick-container">
+    <span>Last Tick: <span id="lastTickValue">N/A</span></span>
+  </div>
+  
+  <!-- Controls -->
+  <label for="market">Select Market:</label>
+  <select id="market">
     <option value="R_10">Volatility 10</option>
     <option value="R_25">Volatility 25</option>
     <option value="R_50">Volatility 50</option>
@@ -159,120 +210,150 @@
     <option value="1HZ50V">Volatility 50 (1s)</option>
     <option value="1HZ75V">Volatility 75 (1s)</option>
     <option value="1HZ100V">Volatility 100 (1s)</option>
-</select>
-    <br><br>
-    <label for="tickCount">Number of Ticks to Analyze:</label>
-    <input type="number" id="tickCount" value="100" min="10" max="1000">
-    <button onclick="connectWebSocket()">Start</button>
+  </select>
+  <br><br>
+  <label for="tickCount">Number of Ticks to Analyze:</label>
+  <input type="number" id="tickCount" value="100" min="10" max="1000">
+  <button onclick="connectWebSocket()">Start</button>
+  
+  <!-- Even-Odd Bar -->
+  <div class="even-odd-bar-container" id="evenOddContainer"></div>
+  
+  <!-- Containers for Analysis -->
+  <div class="circle-container" id="circleContainer"></div>
+  <div class="history-container" id="historyContainer"></div>
+<script>
+  const API_TOKEN = "n6rqpKj9hrdfbiM";
+  const APP_ID = "70549";
+  let tickHistory = [];
+  let ws;
+  
+  function connectWebSocket() {
+    const market = document.getElementById("market").value;
+    tickHistory = [];
+    updateDisplay();
     
-    <div class="circle-container" id="circleContainer"></div>
-    <div class="history-container" id="historyContainer"></div>
-
-    <script>
-        const API_TOKEN = "iGwTSVES9MsY9bv"; // Your API Token
-        const APP_ID = "67340"; // Your App ID
-
-        let tickHistory = [];
-        let ws;
-
-        // Function to connect to WebSocket
-        function connectWebSocket() {
-            const market = document.getElementById("market").value;
-            tickHistory = [];
-            updateDisplay();  // Reset the display
-
-            if (ws) ws.close();  // Close previous connection
-
-            // Create WebSocket connection
-            ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${APP_ID}`);
-
-            ws.onopen = function () {
-                console.log("✅ WebSocket Connected!");
-                ws.send(JSON.stringify({ "authorize": API_TOKEN }));
-                subscribeToMarket(market);
-            };
-
-            ws.onmessage = function (event) {
-                const data = JSON.parse(event.data);
-
-                if (data.error) {
-                    console.error("❌ API Error:", data.error.message);
-                    return;
-                }
-
-                if (data.authorize) {
-                    console.log("✅ Authorization successful!");
-                }
-
-                if (data.tick) {
-                    processTick(data.tick.quote);
-                }
-            };
-
-            ws.onerror = function (error) {
-                console.error("❌ WebSocket Error:", error);
-            };
-        }
-
-        // Subscribe to market ticks
-        function subscribeToMarket(market) {
-            console.log("📡 Subscribing to market:", market);
-            ws.send(JSON.stringify({ "ticks": market, "subscribe": 1 }));
-        }
-
-        // Process each tick
-        function processTick(price) {
-            const lastDigit = parseInt(price.toString().slice(-1));
-
-            tickHistory.push(lastDigit);
-
-            const tickLimit = parseInt(document.getElementById("tickCount").value);
-            if (tickHistory.length > tickLimit) {
-                tickHistory.shift();
-            }
-
-            updateDisplay();
-        }
-
-        // Update the display of circles and history
-        function updateDisplay() {
-            let counts = new Array(10).fill(0);
-            tickHistory.forEach(num => counts[num]++);
-
-            const total = tickHistory.length;
-            const circleContainer = document.getElementById("circleContainer");
-            circleContainer.innerHTML = "";
-
-            // Create circles for digits 0-9
-            for (let i = 0; i <= 9; i++) {
-                const percentage = total > 0 ? ((counts[i] / total) * 100).toFixed(1) : "0.0";
-                const color = `hsl(${i * 36}, 70%, 50%)`;
-
-                const circleDiv = document.createElement("div");
-                circleDiv.className = "circle";
-                circleDiv.style.background = color;
-                circleDiv.innerHTML = `${i}`;
-
-                const infoDiv = document.createElement("div");
-                infoDiv.className = "digit-info";
-                infoDiv.innerHTML = `${percentage}%`;
-
-                const wrapper = document.createElement("div");
-                wrapper.appendChild(circleDiv);
-                wrapper.appendChild(infoDiv);
-                circleContainer.appendChild(wrapper);
-            }
-
-            // Update history of digits
-            const historyContainer = document.getElementById("historyContainer");
-            historyContainer.innerHTML = "";
-            tickHistory.forEach(num => {
-                const item = document.createElement("div");
-                item.className = "history-item";
-                item.innerHTML = num;
-                historyContainer.appendChild(item);
-            });
-        }
-    </script>
+    if (ws) ws.close();
+    
+    ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${APP_ID}`);
+    
+    ws.onopen = function() {
+      console.log("✅ Connected!");
+      ws.send(JSON.stringify({ authorize: API_TOKEN }));
+      subscribeToMarket(market);
+    };
+    
+    ws.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      if (data.error) return console.error("❌", data.error.message);
+      if (data.tick) processTick(data.tick);
+    };
+  }
+  
+  function subscribeToMarket(market) {
+    console.log("Subscribing to:", market);
+    ws.send(JSON.stringify({ ticks: market, subscribe: 1 }));
+  }
+  
+  function processTick(tick) {
+    const raw = tick.quote;
+    const market = document.getElementById("market").value;
+    const volatility = getVolatility(market);
+    
+    let priceStr = formatPrice(raw, volatility);
+    
+    // Extract the actual last digit after the decimal (even if 0)
+    const match = priceStr.match(/\.(\d+)$/);
+    let lastDigit = match ? match[1].slice(-1) : priceStr.slice(-1);
+    
+    document.getElementById("lastTickValue").textContent = priceStr;
+    
+    tickHistory.push(lastDigit);
+    const tickLimit = parseInt(document.getElementById("tickCount").value);
+    if (tickHistory.length > tickLimit) tickHistory.shift();
+    
+    updateDisplay(lastDigit);
+  }
+  
+  // Function to determine how many decimal places based on volatility
+  function formatPrice(price, volatility) {
+    let decimalPlaces = 2; // Default to 2 decimals
+    
+    if (volatility === "10" || volatility === "25") {
+      decimalPlaces = 3; // For volatility 10 and 25
+    } else if (volatility === "50" || volatility === "75") {
+      decimalPlaces = 4; // For volatility 50 and 75
+    }
+    
+    return price.toFixed(decimalPlaces);
+  }
+  
+  // Function to get volatility from the market selection
+  function getVolatility(market) {
+    const marketToVolatilityMap = {
+      "R_10": "10",
+      "R_25": "25",
+      "R_50": "50",
+      "R_75": "75",
+      "R_100": "100",
+      // Add more mappings if needed
+    };
+    return marketToVolatilityMap[market] || "100"; // Default to 100 if not found
+  }
+  
+  function updateDisplay(lastDigit) {
+    let counts = Array(10).fill(0);
+    tickHistory.forEach(num => counts[num]++);
+    
+    const total = tickHistory.length;
+    const even = tickHistory.filter(n => n % 2 === 0).length;
+    const odd = total - even;
+    
+    const evenPercent = total ? ((even / total) * 100).toFixed(1) : 0;
+    const oddPercent = total ? ((odd / total) * 100).toFixed(1) : 0;
+    
+    document.getElementById("evenOddContainer").innerHTML = `
+      <div class="bar even-bar" style="width: ${evenPercent}%; background: blue;">Even: ${evenPercent}%</div>
+      <div class="bar odd-bar" style="width: ${oddPercent}%; background: red;">Odd: ${oddPercent}%</div>
+    `;
+    
+    const circleContainer = document.getElementById("circleContainer");
+    circleContainer.innerHTML = "";
+    
+    for (let i = 0; i <= 9; i++) {
+      let percent = total ? ((counts[i] / total) * 100).toFixed(1) : "0.0";
+      const color = `hsl(${i * 36}, 70%, 50%)`;
+      
+      const wrapper = document.createElement("div");
+      wrapper.className = "digit-wrapper";
+      
+      const circle = document.createElement("div");
+      circle.className = "circle";
+      if (i == lastDigit) circle.classList.add("glow");
+      circle.style.background = color;
+      circle.innerText = i;
+      
+      const info = document.createElement("div");
+      info.className = "digit-info";
+      info.innerText = `${percent}%`;
+      
+      wrapper.appendChild(circle);
+      wrapper.appendChild(info);
+      circleContainer.appendChild(wrapper);
+    }
+    
+    const historyContainer = document.getElementById("historyContainer");
+    historyContainer.innerHTML = "";
+    tickHistory.forEach(num => {
+      const item = document.createElement("div");
+      item.className = "history-item";
+      item.innerText = num;
+      historyContainer.appendChild(item);
+    });
+  }
+</script>
+<footer style="text-align: center; padding: 20px; background-color: #333; color: white;"> 
+ @2025 all rights reserved 
+</footer>
 </body>
 </html>
