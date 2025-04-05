@@ -369,7 +369,7 @@
   
   function updateDisplay(lastDigit) {
     let counts = Array(10).fill(0);
-    tickHistory.forEach(num => counts[num]);
+    tickHistory.forEach(num => counts[num]++);
     
     const total = tickHistory.length;
     const even = tickHistory.filter(n => n % 2 === 0).length;
@@ -439,4 +439,4 @@
  @2025 all rights reserved 
 </footer>
 </body>
-  </html>
+</html> 
