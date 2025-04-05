@@ -5,192 +5,254 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DEC analysis tool</title>
   <style>
-  body {
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    padding: 20px;
-    background-color: #f4f7f6;
-    margin: 0;
-    color: #333;
-  }
+    /* Existing Styles... */
+    body {
+      font-family: 'Roboto', sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f4f7f6;
+      margin: 0;
+      color: #333;
+    }
 
-  h2 {
-    color: #2d2d2d;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-  }
+    h2 {
+      color: #2d2d2d;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
 
-  .last-tick-container {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #333;
-  }
-
-  label {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #555;
-  }
-
-  select, input, button {
-    font-size: 1rem;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    transition: all 0.3s ease;
-  }
-
-  select:focus, input:focus, button:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-
-  button {
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    border: none;
-    transition: background-color 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #0056b3;
-  }
-
-  .circle-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 30px;
-    padding: 10px;
-    transition: all 0.3s ease;
-  }
-
-  .circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    background-color: #007bff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-
-  .circle.glow {
-    box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.75);
-    transform: scale(1.1);
-  }
-
-  .digit-info {
-    font-size: 14px;
-    margin-top: 5px;
-    color: #555;
-  }
-
-  .digit-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .history-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-  }
-
-  .history-item {
-    font-size: 20px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 25px;
-    background-color: #f0f4f7;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    color: #007bff;
-    transition: all 0.3s ease;
-  }
-
-  .history-item:hover {
-    background-color: #007bff;
-    color: white;
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 768px) {
-    .circle {
-      width: 70px;
-      height: 70px;
+    .last-tick-container {
       font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
     }
-    .digit-info {
-      font-size: 12px;
+
+    label {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #555;
     }
-    .history-item {
+
+    select, input, button {
+      font-size: 1rem;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    select:focus, input:focus, button:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    button {
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .circle-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      padding: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 18px;
-      padding: 8px 15px;
+      font-weight: bold;
+      color: white;
+      background-color: #007bff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
     }
-  }
 
-  @media (max-width: 480px) {
-    .circle {
-      width: 60px;
-      height: 60px;
-      font-size: 14px;
+    .circle.glow {
+      box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.75);
+      transform: scale(1.1);
     }
+
     .digit-info {
-      font-size: 10px;
+      font-size: 14px;
+      margin-top: 5px;
+      color: #555;
     }
+
+    .digit-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .history-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
     .history-item {
-      font-size: 16px;
-      padding: 6px 12px;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 25px;
+      background-color: #f0f4f7;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      color: #007bff;
+      transition: all 0.3s ease;
     }
-  }
 
-  /* Even-Odd Bar Styles */
-  .even-odd-bar-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-    margin-bottom: 30px;
-  }
+    .history-item:hover {
+      background-color: #007bff;
+      color: white;
+      transform: translateY(-2px);
+    }
 
-  .bar {
-    height: 20px;
-    width: 45%;
-    text-align: center;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: width 0.5s ease;
-  }
+    @media (max-width: 768px) {
+      .circle {
+        width: 70px;
+        height: 70px;
+        font-size: 16px;
+      }
+      .digit-info {
+        font-size: 12px;
+      }
+      .history-item {
+        font-size: 18px;
+        padding: 8px 15px;
+      }
+    }
 
-  .even-bar {
-    background-color: #28a745;
-  }
+    @media (max-width: 480px) {
+      .circle {
+        width: 60px;
+        height: 60px;
+        font-size: 14px;
+      }
+      .digit-info {
+        font-size: 10px;
+      }
+      .history-item {
+        font-size: 16px;
+        padding: 6px 12px;
+      }
+    }
 
-  .odd-bar {
-    background-color: #dc3545;
-  }
+    /* Even-Odd Bar Styles */
+    .even-odd-bar-container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .bar {
+      height: 20px;
+      width: 45%;
+      text-align: center;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: width 0.5s ease;
+    }
+
+    .even-bar {
+      background-color: #28a745;
+    }
+
+    .odd-bar {
+      background-color: #dc3545;
+    }
+
+    /* Rise-Fall Bar Styles */
+    .rise-fall-bar-container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .rise-bar, .fall-bar {
+      height: 20px;
+      width: 45%;
+      text-align: center;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: width 0.5s ease;
+    }
+
+    .rise-bar {
+      background-color: #28a745; /* Green for rise */
+    }
+
+    .fall-bar {
+      background-color: #dc3545; /* Red for fall */
+    }
+    
+    .navbar {
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    .navbar a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    /* Active Link Styles */
+    .active {
+      background-color: #4CAF50;
+      color: white;
+    }
   </style>
+
 </head>
 <body>
   <h2>Deriv Last Digit Analysis</h2>
+    <h3>New analysis</h3>
+   <div class="navbar">
+    <a href="History.html" class="active" id="historicalLink">Historical Analysis</a>
+    <a href="index.html" id="newAnalysisLink">New Analysis</a>
+  </div>
   
   <!-- Last Tick Display -->
   <div id="lastTick" class="last-tick-container">
@@ -219,6 +281,9 @@
   <!-- Even-Odd Bar -->
   <div class="even-odd-bar-container" id="evenOddContainer"></div>
   
+  <!-- Rise and Fall Bars -->
+  <div class="rise-fall-bar-container" id="riseFallContainer"></div>
+  
   <!-- Containers for Analysis -->
   <div class="circle-container" id="circleContainer"></div>
   <div class="history-container" id="historyContainer"></div>
@@ -226,6 +291,7 @@
   const API_TOKEN = "n6rqpKj9hrdfbiM";
   const APP_ID = "70549";
   let tickHistory = [];
+  let previousTick = null; // Variable to track the previous tick value
   let ws;
   
   function connectWebSocket() {
@@ -303,7 +369,7 @@
   
   function updateDisplay(lastDigit) {
     let counts = Array(10).fill(0);
-    tickHistory.forEach(num => counts[num]++);
+    tickHistory.forEach(num => counts[num]);
     
     const total = tickHistory.length;
     const even = tickHistory.filter(n => n % 2 === 0).length;
@@ -315,6 +381,23 @@
     document.getElementById("evenOddContainer").innerHTML = `
       <div class="bar even-bar" style="width: ${evenPercent}%; background: blue;">Even: ${evenPercent}%</div>
       <div class="bar odd-bar" style="width: ${oddPercent}%; background: red;">Odd: ${oddPercent}%</div>
+    `;
+    
+    // Rise and Fall Calculation
+    let riseCount = 0;
+    let fallCount = 0;
+    
+    for (let i = 1; i < tickHistory.length; i++) {
+      if (tickHistory[i] > tickHistory[i - 1]) riseCount++;
+      else if (tickHistory[i] < tickHistory[i - 1]) fallCount++;
+    }
+    
+    const risePercent = total ? ((riseCount / total) * 100).toFixed(1) : 0;
+    const fallPercent = total ? ((fallCount / total) * 100).toFixed(1) : 0;
+    
+    document.getElementById("riseFallContainer").innerHTML = `
+      <div class="rise-bar" style="width: ${risePercent}%; background: green;">Rise: ${risePercent}%</div>
+      <div class="fall-bar" style="width: ${fallPercent}%; background: red;">Fall: ${fallPercent}%</div>
     `;
     
     const circleContainer = document.getElementById("circleContainer");
@@ -356,4 +439,4 @@
  @2025 all rights reserved 
 </footer>
 </body>
-</html>
+  </html>
